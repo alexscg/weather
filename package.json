@@ -1,0 +1,27 @@
+{
+  "name": "weather",
+  "version": "1.0.0",
+  "description": "Display upcoming weather using openweathermap.org API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexscg/weather.git"
+  },
+  "keywords": [
+    "weather",
+    "openweathermap",
+    "api"
+  ],
+  "author": "Alex Shapiro",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexscg/weather/issues"
+  },
+  "homepage": "https://github.com/alexscg/weather#readme",
+  "devDependencies": {
+    "grunt": "^0.4.5"
+  }
+}
