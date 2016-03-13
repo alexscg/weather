@@ -34,41 +34,43 @@
 		function populateMainData(data){
 			var o = $('.jumbotron .container');
 			
-			var date = new Date(data.list[0].dt * 1000),
-				day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-			
-			$('.day', o).text(day[date.getUTCDay()]);
-			$('.date', o).text('Last update: ' + data.list[0].dt_txt);
+			$('.day', o).text(getDay(data.list[0].dt));
 			$('.location .city', o).text(data.city.name);
 			$('.location .lat', o).text('(lat: ' + data.city.coord.lat);
 			$('.location .lon', o).text(', lon: ' + data.city.coord.lon + ')');
 			
-			var temp = (data.list[0].main.temp - 273.15) * 1.8 + 32,
-				units = 'f<sup>o</sup>';
-				
-			if(config.units === 'celsius'){
-				temp = (data.list[0].main.temp - 273.15);
-				units = 'C<sup>o</sup>';
-			}
-			
-			$('.degree .num', o).html(temp.toFixed(1) + ' ' + units);
-			
+			$('.degree .num', o).html(getTemperature(data.list[0].temp.day));
 			$('.degree .forecast-icon img', o).attr('src', 'http://openweathermap.org/img/w/' + data.list[0].weather[0].icon + '.png');
-			
-			$('.forecast-content span.hum').text(data.list[0].main.humidity);
-			$('.forecast-content span.wind').text(data.list[0].wind.speed);
-			$('.forecast-content span.dir').text(degToCompass(data.list[0].wind.deg));
-			//console.log(); data.list[0].main
+			$('.forecast-content span.hum').text(data.list[0].humidity);
+			$('.forecast-content span.wind').text(data.list[0].speed);
+			$('.forecast-content span.dir').text(degToCompass(data.list[0].deg));
 		}
 		
 		function populateFourDays(data){
 			$('.container .row .forecast').each(function(index){
-				var date = new Date(data.list[index+1].dt * 1000),
-					day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-				
-				$(this).find('.forecast-header .day').text(day[date.getUTCDay()]);
-				console.log(index+1, day[date.getUTCDay()]);
+				$(this).find('.forecast-header .day').text(getDay(data.list[index+1].dt));
+				$(this).find('.forecast-content .forecast-icon img').attr('src', 'http://openweathermap.org/img/w/' + data.list[0].weather[0].icon + '.png');
+				$(this).find('.forecast-content .degree').html(getTemperature(data.list[index+1].temp.day));
 			});
+		}
+		
+		function getDay(utc){
+			var date = new Date(utc * 1000),
+				day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+			
+			return day[date.getUTCDay()];
+		}
+		
+		function getTemperature(k){
+			var temp = (k - 273.15) * 1.8 + 32,
+				units = 'f<sup>o</sup>';
+				
+			if(config.units === 'celsius'){
+				temp = (k - 273.15);
+				units = 'C<sup>o</sup>';
+			}
+			
+			return Math.round(temp) + ' ' + units;
 		}
 		
 		function degToCompass(num){
@@ -84,9 +86,9 @@
 		'country':	'US',
 		'city':		'New York',
 		'cityID':	'5128638', // recommended method
-		'units':	'fahrenheit',
+		'units':	'celsius',
 		'dayCount':	'5',
-		'baseURL':	'http://api.openweathermap.org/data/2.5/forecast?'
+		'baseURL':	'http://api.openweathermap.org/data/2.5/forecast/daily?'
 	};
 	var Weather = new W(config);
 	
