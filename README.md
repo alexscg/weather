@@ -10,3 +10,5 @@ Show weather using openweathermap.org API
 - Geolocation for default city
 - Social network integration
 - Better UI and animations
+
+Preview at: http://intfactor.com/weather/index.html
